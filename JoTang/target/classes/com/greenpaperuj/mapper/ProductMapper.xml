@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.greenpaperuj.mapper.ProductMapper">
+    <update id="update">
+        update product
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="status != null and status != ''">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectByCondition" resultType="com.greenpaperuj.pojo.Product">
+        select * from product
+        <where>
+            <if test="type != null and type != ''">
+                type = #{type}
+            </if>
+            <if test="minPrice != null">
+                and price >= #{minPrice}
+            </if>
+            <if test="maxPrice != null">
+                and price &lt;= #{maxPrice}
+            </if>
+            <if test="startTime != null and endTime != null">
+                and create_time between #{startTime} and #{endTime}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+</mapper>
